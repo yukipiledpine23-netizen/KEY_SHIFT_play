@@ -1,22 +1,5 @@
 # 20260326
-# 直下にinput.txt作って、ドレミ レbとか書き込んでおく
-# 変更したいキーを、configのKEY_SHIFTで書いておく。実行するとoutput.txtに追加される
-# ラシレミ b
 
-#ボタンを押すと順次演奏される。Streamlit
-#実行方法は、左下のターミナルをおして、streamlit run "KEY_SHIFT&play_phone.py"
-#ctrl+cで終わる.
-#スマホ用
-# ターミナルに表示されるNetwork URL: http://192.168.10.103:8501これをスマホブラウザで打てば、ローカルネットワーク内なら確認できる。
-
-# githubにあげてスマホで共有する。
-#yuki.piledpine2.3@gmail.com
-# のgoogleアカウントで入った
-# ユーザー名：yukipiledpine23-netizen　で登録した
-
-#メニューからリポジトリ→新しいリポジトリ→リポジトリ名
-# →表示範囲→プライベート→リポジトリを作成
-# 中央当たりにuploading an existing fileを押して、ファイルをアップロード
 
 
 import streamlit as st
