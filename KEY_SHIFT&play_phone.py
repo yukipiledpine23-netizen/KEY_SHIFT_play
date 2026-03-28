@@ -12,8 +12,6 @@ st.set_page_config(page_title="VOICE TUNER NEO", layout="centered")
 st.markdown("""
     <style>
     .stApp { background-color: #0e0e10 !important; color: #e1e1e3 !important; }
-
-    /* セレクトボックスの赤枠・重なりを徹底排除 */
     div[data-baseweb="select"] { 
         border: 1px solid #3a3a3c !important; 
         background-color: #1c1c1f !important;
@@ -24,11 +22,6 @@ st.markdown("""
         box-shadow: none !important;
         outline: none !important;
     }
-    div[data-baseweb="select"]:focus-within {
-        border-color: #00d4ff !important;
-        box-shadow: 0 0 10px rgba(0, 212, 255, 0.2) !important;
-    }
-
     header {visibility: hidden;}
     .main .block-container { padding-top: 2rem; }
     </style>
@@ -51,18 +44,14 @@ def get_base_notes_with_structure(filename):
             original_text = f.read()
     except:
         return [], ""
-
     clean_text = original_text.lower().replace("ー", "")
     pattern = r"([ァ-ヶぁ-ん]{1,2}|[a-z]{1,2})([#b♭＃＃]?)([0-9])([#b♭＃＃]?)"
     matches = re.finditer(pattern, clean_text)
     base_data = []
     for m in matches:
-        name_part = m.group(1)
-        acc = m.group(2) if m.group(2) else m.group(4)
-        oct_str = m.group(3)
+        name_part = m.group(1); acc = m.group(2) if m.group(2) else m.group(4); oct_str = m.group(3)
         if name_part in note_map:
-            base_val = note_map[name_part]
-            adj = 1 if acc in ['#', '＃'] else -1 if acc in ['b', '♭'] else 0
+            base_val = note_map[name_part]; adj = 1 if acc in ['#', '＃'] else -1 if acc in ['b', '♭'] else 0
             base_data.append({"abs_pos": int(oct_str) * 12 + base_val + adj})
     return base_data, original_text
 
@@ -72,7 +61,6 @@ selected_file = st.selectbox("SELECT TRACK", txt_files, label_visibility="collap
 
 if selected_file:
     data, raw_text = get_base_notes_with_structure(selected_file)
-
     if data:
         notes_json = str(data).replace("'", '"')
         safe_raw_text = raw_text.replace("\\", "\\\\").replace("`", "\\`").replace("${", "\\${").replace("\n", "\\n")
@@ -93,18 +81,14 @@ if selected_file:
                 <button onclick="changeKey(1)" style="width:55px; height:55px; border:none; background:transparent; color:#00d4ff; font-size:24px; cursor:pointer; outline:none; -webkit-tap-highlight-color: transparent;">➕</button>
             </div>
 
-            <div onclick="playCurrent()" style="background:linear-gradient(145deg, #161618, #1c1c1f); border:1px solid #3a3a3c; border-radius:18px; padding:65px 0 55px 0; text-align:center; margin-bottom:18px; cursor:pointer; position:relative; overflow:hidden; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent;">
+            <div onclick="playNext()" style="background:linear-gradient(145deg, #161618, #1c1c1f); border:1px solid #3a3a3c; border-radius:18px; padding:65px 0 55px 0; text-align:center; margin-bottom:18px; cursor:pointer; position:relative; overflow:hidden; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent;">
                 <p style="font-size:13px; color:#555; letter-spacing:3px; position:absolute; top:18px; width:100%;">TAP TO NEXT ▶</p>
                 <h1 id="display-note" style="font-size:95px; color:#fff; text-shadow: 0 0 25px rgba(0,212,255,0.4); margin:0; font-weight:100; line-height:0.8; display:block;">--</h1>
             </div>
 
             <div style="display:flex; gap:12px; margin-bottom:28px; user-select: none;">
-                <button onclick="resetApp()" style="flex:1; height:52px; border-radius:12px; border:1px solid #3a3a3c; background:linear-gradient(180deg, #2a2a2e, #1c1c1f); color:#bbb; font-size:13px; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; outline:none; -webkit-tap-highlight-color: transparent;">
-                    |< 最初へ
-                </button>
-                <button onclick="prevNote()" style="flex:1; height:52px; border-radius:12px; border:1px solid #3a3a3c; background:linear-gradient(180deg, #2a2a2e, #1c1c1f); color:#bbb; font-size:13px; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; outline:none; -webkit-tap-highlight-color: transparent;">
-                    ◀ 戻る
-                </button>
+                <button onclick="resetApp()" style="flex:1; height:52px; border-radius:12px; border:1px solid #3a3a3c; background:linear-gradient(180deg, #2a2a2e, #1c1c1f); color:#bbb; font-size:13px; font-weight:600; cursor:pointer; outline:none; -webkit-tap-highlight-color: transparent;">|< 最初へ</button>
+                <button onclick="prevNote()" style="flex:1; height:52px; border-radius:12px; border:1px solid #3a3a3c; background:linear-gradient(180deg, #2a2a2e, #1c1c1f); color:#bbb; font-size:13px; font-weight:600; cursor:pointer; outline:none; -webkit-tap-highlight-color: transparent;">◀ 戻る</button>
             </div>
 
             <div style="background:#161618; border-radius:14px; padding:18px; border:1px solid #2d2d30;">
@@ -117,32 +101,23 @@ if selected_file:
                     <div id="before-list" style="color:#444; font-size:14px; white-space:pre-wrap; line-height:1.8; max-height:150px; overflow-y:auto; padding:10px; margin-top:8px; border:1px solid #2d2d30; border-radius:6px; background:#0e0e10; user-select: text;"></div>
                 </div>
             </div>
-
-            <div style="text-align:center; padding:20px 0 5px 0; font-size:9px; color:#3a3a3c; letter-spacing:3px; user-select: none;">
-                DEVELOPED BY 鷺城流
-            </div>
+            <div style="text-align:center; padding:20px 0 5px 0; font-size:9px; color:#3a3a3c; letter-spacing:3px; user-select: none;">DEVELOPED BY 鷺城流</div>
         </div>
 
         <script>
-        const baseData = {notes_json};
-        const rawText = `{safe_raw_text}`;
-        const valToNote = ["ド", "ド#", "レ", "レ#", "ミ", "ファ", "ファ#", "ソ", "ソ#", "ラ", "ラ#", "シ"];
-        let currentKey = 0, currentIndex = 0, audioCtx = null, masterGain = null, activeNodes = [];
+        const baseData = {notes_json}, rawText = `{safe_raw_text}`, valToNote = ["ド", "ド#", "レ", "レ#", "ミ", "ファ", "ファ#", "ソ", "ソ#", "ラ", "ラ#", "シ"];
+        let currentKey = 0, currentIndex = -1, nextDisplayIndex = 0, audioCtx = null, masterGain = null, activeNodes = [];
 
-        function initAudio() {{ 
-            if (!audioCtx) {{ 
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)(); 
-                masterGain = audioCtx.createGain(); 
-                masterGain.gain.setValueAtTime(1.5, audioCtx.currentTime); 
-                const comp = audioCtx.createDynamicsCompressor(); 
-                masterGain.connect(comp); comp.connect(audioCtx.destination); 
-            }} 
-        }}
+        function initAudio() {{ if (!audioCtx) {{ audioCtx = new (window.AudioContext || window.webkitAudioContext)(); masterGain = audioCtx.createGain(); masterGain.gain.setValueAtTime(1.5, audioCtx.currentTime); const comp = audioCtx.createDynamicsCompressor(); masterGain.connect(comp); comp.connect(audioCtx.destination); }} }}
 
         function updateDisplay() {{
-            if (!baseData[currentIndex]) return;
-            const pos = baseData[currentIndex].abs_pos + currentKey;
-            document.getElementById('display-note').innerText = valToNote[((pos % 12) + 12) % 12] + Math.floor(pos / 12);
+            const disp = document.getElementById('display-note');
+            // 中央の巨大表示は「次に出る音」を表示
+            if (nextDisplayIndex >= baseData.length) disp.innerText = "END";
+            else {{
+                const pos = baseData[nextDisplayIndex].abs_pos + currentKey;
+                disp.innerText = valToNote[((pos % 12) + 12) % 12] + Math.floor(pos / 12);
+            }}
             document.getElementById('key-val').innerText = "KEY: " + (currentKey > 0 ? "+" : "") + currentKey;
             updateLists();
         }}
@@ -154,7 +129,8 @@ if selected_file:
                 return rawText.split('\\n').map(line => line.replace(pattern, (match) => {{
                     const idx = count++; if (!baseData[idx]) return match;
                     let txt = match;
-                    if (isAfter) {{ const pos = baseData[idx].abs_pos + currentKey; txt = valToNote[((pos % 12) + 12) % 12] + Math.floor(pos / 12); }}
+                    if (isAfter) {{ const p = baseData[idx].abs_pos + currentKey; txt = valToNote[((p % 12) + 12) % 12] + Math.floor(p / 12); }}
+                    // ここで「今鳴らした音(currentIndex)」を強調
                     let style = idx === currentIndex ? "color:#00d4ff; font-weight:bold; border-bottom:1px solid #00d4ff;" : "";
                     return `<span style="${{style}}">${{txt}}</span>`;
                 }})).join('\\n');
@@ -163,23 +139,38 @@ if selected_file:
             document.getElementById('before-list').innerHTML = replaceFunc(false);
         }}
 
-        function playCurrent() {{
+        function playNext() {{
             initAudio(); if (audioCtx.state === 'suspended') audioCtx.resume();
-            activeNodes.forEach(n => {{ try {{ n.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05); }} catch(e) {{}} }}); activeNodes = [];
+            
+            // カウントを一つ進める（最初は -1 から 0 へ）
+            if (currentIndex < baseData.length - 1) {{
+                currentIndex++;
+                nextDisplayIndex = currentIndex + 1; // 巨大表示用のインデックス
+            }} else {{
+                // 最後まで行ったら最初に戻る
+                currentIndex = 0;
+                nextDisplayIndex = 1;
+            }}
+            
+            updateDisplay();
+
+            activeNodes.forEach(n => {{ try {{ n.g.gain.cancelScheduledValues(audioCtx.currentTime); n.g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05); }} catch(e) {{}} }}); 
+            activeNodes = [];
+            
             const pos = baseData[currentIndex].abs_pos + currentKey, freq = 440 * Math.pow(2, (pos - 57) / 12);
             const createTone = (f, vol, decay) => {{
                 const osc = audioCtx.createOscillator(); const g = audioCtx.createGain();
                 osc.type = 'sine'; osc.frequency.setValueAtTime(f, audioCtx.currentTime);
-                g.gain.setValueAtTime(0, audioCtx.currentTime); g.gain.linearRampToValueAtTime(vol, audioCtx.currentTime + 0.005);
+                g.gain.setValueAtTime(0.001, audioCtx.currentTime); g.gain.linearRampToValueAtTime(vol, audioCtx.currentTime + 0.005);
                 g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + decay);
                 osc.connect(g); g.connect(masterGain); osc.start(); osc.stop(audioCtx.currentTime + decay + 0.1); return {{osc, g}};
             }};
             activeNodes.push(createTone(freq, 1.0, 1.8), createTone(freq * 2, 0.4, 1.2), createTone(freq * 3, 0.2, 0.8));
-            if (currentIndex < baseData.length - 1) {{ currentIndex++; setTimeout(updateDisplay, 50); }}
         }}
+
         function changeKey(diff) {{ currentKey += diff; updateDisplay(); }}
-        function prevNote() {{ if (currentIndex > 0) {{ currentIndex--; updateDisplay(); }} }}
-        function resetApp() {{ currentIndex = 0; updateDisplay(); }}
+        function prevNote() {{ if (currentIndex > 0) {{ currentIndex--; nextDisplayIndex = currentIndex + 1; updateDisplay(); }} }}
+        function resetApp() {{ currentIndex = -1; nextDisplayIndex = 0; updateDisplay(); }}
         updateDisplay();
         </script>
         """
