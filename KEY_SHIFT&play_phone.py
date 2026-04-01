@@ -119,7 +119,7 @@ if selected_file:
             </div>
 
             <div style="text-align:center; padding:20px 0 5px 0; font-size:9px; color:#3a3a3c; letter-spacing:3px; user-select: none;">
-                DEVELOPED BY 喜多レコード
+                DEVELOPED BY 鷺城流
             </div>
         </div>
 
