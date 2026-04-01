@@ -82,7 +82,7 @@ if selected_file:
 
             <div style="text-align:center; padding:15px 0 20px 0; user-select: none;">
                 <h2 style="letter-spacing:12px; font-weight:200; color:#00d4ff; margin:0; font-size:14px; opacity:0.8; display:inline-block; position:relative; padding-bottom:12px;">
-                    VOICE TUNER NEO
+                    VOICE TUNER ROJO
                     <span style="position:absolute; bottom:0; left:50%; transform:translateX(-50%); width:240px; height:1px; background:linear-gradient(90deg, transparent, #00d4ff, transparent); opacity:0.4;"></span>
                 </h2>
             </div>
@@ -119,7 +119,7 @@ if selected_file:
             </div>
 
             <div style="text-align:center; padding:20px 0 5px 0; font-size:9px; color:#3a3a3c; letter-spacing:3px; user-select: none;">
-                DEVELOPED BY 喜多システムズ
+                DEVELOPED BY 喜多レコード
             </div>
         </div>
 
